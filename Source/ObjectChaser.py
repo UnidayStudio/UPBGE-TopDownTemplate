@@ -13,10 +13,10 @@
 #	-> Navmesh Name: The name of your navmesh
 #	-> Target Object: The name of your target
 #	-> Min Distance: The minimum distance that you want the object from the
-#					 target
+#                    target
 #	-> Tolerance Distance: Once the object is already near the target, the
-#						   extra tolerance distance that they can have before
-#						   it starts chasing again.
+#                          extra tolerance distance that they can have before
+#                          it starts chasing again.
 #	-> Speed: The speed of the object while chasing the target
 #	-> Front Axis: The front Axis (put Y axis if you don't know)
 #	-> Up Axis: The up Axis (put Z if you don't know)
@@ -27,15 +27,15 @@ from mathutils import Vector
 
 class ObjectChaser(bge.types.KX_PythonComponent):
 	args = {
-		"Activate"			: True,
-		"Navmesh Name"		: "",
-		"Target Object"		: "",
-		"Min Distance"		: 2.0,
+		"Activate"          : True,
+		"Navmesh Name"      : "",
+		"Target Object"     : "",
+		"Min Distance"      : 2.0,
 		"Tolerance Distance": 1.0,
-		"Speed"				: 0.1,
-		"Front Axis"		: {"Z Axis", "Y Axis", "X Axis"},
-		"Up Axis"			: {"Z Axis", "Y Axis", "X Axis"},
-		"Smooth Turn"		: 0.5,
+		"Speed"             : 0.1,
+		"Front Axis"        : {"Z Axis", "Y Axis", "X Axis"},
+		"Up Axis"           : {"Z Axis", "Y Axis", "X Axis"},
+		"Smooth Turn"       : 0.5,
 	}
 
 	# Start Function
@@ -50,7 +50,7 @@ class ObjectChaser(bge.types.KX_PythonComponent):
 		if self.minDist < 1:
 			self.minDist = 1
 		self.tolerance  = args["Tolerance Distance"]
-		self.speed 		= args["Speed"]
+		self.speed      = args["Speed"]
 
 		self.upAxis    = {"X Axis":0, "Y Axis":1, "Z Axis":2}[args["Up Axis"]]
 		self.frontAxis = {"X Axis":0, "Y Axis":1, "Z Axis":2}[args["Front Axis"]]
@@ -76,8 +76,7 @@ class ObjectChaser(bge.types.KX_PythonComponent):
 		# This will avoid unecessary logic consuming.
 		if self.__targetPos != self.target.worldPosition:
 			self.__targetPos = self.target.worldPosition.copy()
-			self.__path = self.navmesh.findPath(self.object.worldPosition,
-												self.__targetPos)
+			self.__path = self.navmesh.findPath(self.object.worldPosition, self.__targetPos)
 
 		if len(self.__path) > 0:
 			vec = self.object.getVectTo(self.__path[0])

@@ -31,7 +31,7 @@ class CameraDrag(bge.types.KX_PythonComponent):
 		"Mouse Movement"	: True,
 		"Mouse Button"		: {"Right Mouse Button", "Middle Mouse Button", "Left Mouse Button"},
 		"Keyboard Movement"	: True,
-		"Up Axis"			: {"Z Axis", "Y Axis", "X Axis"},
+		"Up Axis"          	: {"Z Axis", "Y Axis", "X Axis"},
 		"Local Movement"	: False,
 		"Mouse Sensibility"	: 10.5,
 		"Keyboard Speed"	: 0.3,
@@ -43,9 +43,9 @@ class CameraDrag(bge.types.KX_PythonComponent):
 		self.hasMouseMovement = args["Mouse Movement"]
 		self.hasKeyboardMovement = args["Keyboard Movement"]
 
-		self.mButton = {"Left Mouse Button"		:bge.events.LEFTMOUSE,
-						"Middle Mouse Button"	:bge.events.MIDDLEMOUSE,
-						"Right Mouse Button"	:bge.events.RIGHTMOUSE}
+		self.mButton = {"Left Mouse Button"   :bge.events.LEFTMOUSE,
+		                "Middle Mouse Button" :bge.events.MIDDLEMOUSE,
+		                "Right Mouse Button"  :bge.events.RIGHTMOUSE}
 		self.mButton = self.mButton[args["Mouse Button"]]
 
 		self.upAxis = {"X Axis":0, "Y Axis":1, "Z Axis":2}[args["Up Axis"]]
