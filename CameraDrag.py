@@ -5,21 +5,22 @@
 #                       Access: youtube.com/UnidayStudio                      #
 #                               github.com/UnidayStudio                       #
 ###############################################################################
-# HOW TO USE IN YOUR PROJECTS:                                                #
-# It's very easy to use: Just load this script into your .blend file (or paste#
-# them in the same folder that your .blend is), select your camera (or an obj,#
-# you decide) and attach them into the components (CameraDrag.CameraDrag).	  #
-# 	It's very simple to configure:											  #
-#	-> Show Mouse: Enable if you want to show the mouse						  #
-#	-> Mouse Movement: Enable if you want to activate the mouse drag logic	  #
-#	-> Keyboard Movement: Enable if you want to move the object using W,A,S,D #
-#	-> Up Axis: Select the UP axis.											  #
-#	-> Local Movement: Local or Global movement? You decide!				  #
-#	-> Mouse Sensibility: The mouse sensibility! 							  #
-#	-> Keyboard Speed: If you enabled the Keyboard Movement, control the speed#
-#					   here!												  #
-#	-> Limit Area: You can limit the area that the object can stay by playing #
-#				   around with this values. If you don't want, just set to 0  #
+# HOW TO USE IN YOUR PROJECTS:
+# It's very easy to use: Just load this script into your .blend file (or paste
+# them in the same folder that your .blend is), select your camera (or an obj,
+# you decide) and attach them into the components (CameraDrag.CameraDrag).
+# 	It's very simple to configure:
+#	-> Show Mouse: Enable if you want to show the mouse
+#	-> Mouse Movement: Enable if you want to activate the mouse drag logic
+#	-> Mouse Button: Which mouse button you want to use
+#	-> Keyboard Movement: Enable if you want to move the object using W,A,S,D
+#	-> Up Axis: Select the UP axis.
+#	-> Local Movement: Local or Global movement? You decide!
+#	-> Mouse Sensibility: The mouse sensibility!
+#	-> Keyboard Speed: If you enabled the Keyboard Movement, control the speed
+#					   here!
+#	-> Limit Area: You can limit the area that the object can stay by playing
+#				   around with this values. If you don't want, just set to 0
 ###############################################################################
 import bge
 from mathutils import Vector
@@ -28,6 +29,7 @@ class CameraDrag(bge.types.KX_PythonComponent):
 	args = {
 		"Show Mouse"		: True,
 		"Mouse Movement"	: True,
+		"Mouse Button"		: {"Right Mouse Button", "Middle Mouse Button", "Left Mouse Button"},
 		"Keyboard Movement"	: True,
 		"Up Axis"			: {"Z Axis", "Y Axis", "X Axis"},
 		"Local Movement"	: False,
@@ -40,6 +42,11 @@ class CameraDrag(bge.types.KX_PythonComponent):
 	def start(self, args):
 		self.hasMouseMovement = args["Mouse Movement"]
 		self.hasKeyboardMovement = args["Keyboard Movement"]
+
+		self.mButton = {"Left Mouse Button"		:bge.events.LEFTMOUSE,
+						"Middle Mouse Button"	:bge.events.MIDDLEMOUSE,
+						"Right Mouse Button"	:bge.events.RIGHTMOUSE}
+		self.mButton = self.mButton[args["Mouse Button"]]
 
 		self.upAxis = {"X Axis":0, "Y Axis":1, "Z Axis":2}[args["Up Axis"]]
 		self.localMovement = args["Local Movement"]
@@ -87,7 +94,7 @@ class CameraDrag(bge.types.KX_PythonComponent):
 		mouse = bge.logic.mouse.inputs
 		mPos = Vector(bge.logic.mouse.position)
 
-		if mouse[bge.events.RIGHTMOUSE].values[-1]:
+		if mouse[self.mButton].values[-1]:
 			# Mouse displacement since last frame
 			mDisp = self.__lastMousePos - mPos
 			mDisp *= self.sens # Apply Mouse sensibility
