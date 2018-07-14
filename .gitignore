@@ -18,6 +18,13 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Other...
+*.blend1
+*.blend2
+.idea/
+.__pycache__/
+
+
 # =========================
 # Operating System Files
 # =========================
