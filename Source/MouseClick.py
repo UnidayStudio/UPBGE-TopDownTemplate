@@ -25,7 +25,7 @@ class MouseClick(bge.types.KX_PythonComponent):
 		"Activate"			: True,
 		"Mouse Button"	: {"Left Mouse Button", "Middle Mouse Button", "Right Mouse Button"},
 		"Align To Normal"	: False,
-		"Property"			: "",
+		"Property"			: "ground",
 	}
 
 	# Start Function

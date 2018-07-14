@@ -24,11 +24,26 @@ You can attach this component into your camera or into other objects. It's very 
 ## Mouse Click Component
 This component will allow you to teleport an object right into the point that the player clicks. You can limit the scope of the clicks by adding a property. This feature is very useful for top down/point and click games, because you need a pivot to point where the player wants the character to go.
 It's very simple to configure:
-- Activate: Activate or deactivate the logic
-- Mouse Button: Which mouse button you want to use
-- Align To Normal: Enable if you want to align the object to the mouse over normal.
-- Property: The property that you want to interact with (leave this blank if you want to interact with everything).
+- **Activate**: Activate or deactivate the logic
+- **Mouse Button**: Which mouse button you want to use
+- **Align To Normal**: Enable if you want to align the object to the mouse over normal.
+- **Property**: The property that you want to interact with (leave this blank if you want to interact with everything).
+
+## Object Chaser Component
+This component will make the object chase a target (another object) when they have certain distance. Note that is necessary to have a navmesh in your scene.
+You can also change the Target object in realtime by calling the function setTarget().
+It's very simple to configure:
+- **Activate**: Activate or deactivate the logic.
+- **Navmesh Name**: The name of your navmesh.
+- **Target Object**: The name of your target.
+- **Min Distance**: The minimum distance that you want the object from the target.
+- **Tolerance Distance**: Once the object is already near the target, the extra tolerance distance that they can have before it starts chasing again.
+- **Speed**: The speed of the object while chasing the target.
+- **Front Axis**: The front Axis (put Y axis if you don't know).
+- **Up Axis**: The up Axis (put Z if you don't know).
+- **Smooth Turn**: To smooth the path following turns.
 
 Created by **Guilherme Teres Nunes**
 
-Access my youtube channel: youtube.com/UnidayStudio
+Access my youtube channel:
+youtube.com/UnidayStudio
