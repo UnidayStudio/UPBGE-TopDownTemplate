@@ -2,6 +2,8 @@
 ###### For UPBGE 0.2.3
 This template was created to help Blender Game Engine (UPBGE) users to create games or any kind of interactive thing that request a Top Down Controller. Easy to use, easy to attach to your project.
 
+![](https://blenderartists.org/uploads/default/original/4X/8/b/2/8b28adb9c71912a28cc5c4423116446159fe6aeb.jpg)
+
 To use, just download the files, open it on UPBGE (version 0.2.3 recommended) and you're done!
 You can use this template in your projects, even for commercial projects. Just credit me for this.:)
 It's very easy to use in your projects: Just load this script into your .blend file (or paste them in the same folder that your .blend is), select the object that you want, and attach the script into the object's components.
