@@ -23,7 +23,7 @@
 #				   around with this values. If you don't want, just set to 0
 ###############################################################################
 import bge
-from mathutils import Vector
+from mathutils import Vector, Matrix
 
 class CameraDrag(bge.types.KX_PythonComponent):
 	args = {
@@ -33,7 +33,7 @@ class CameraDrag(bge.types.KX_PythonComponent):
 		"Keyboard Movement"	: True,
 		"Up Axis"          	: {"Z Axis", "Y Axis", "X Axis"},
 		"Local Movement"	: False,
-		"Mouse Sensibility"	: 10.5,
+		"Mouse Sensibility"	: 0.5,
 		"Keyboard Speed"	: 0.3,
 		"Limit Area"		: Vector([0.0,0.0,0.0]),
 	}
@@ -62,11 +62,15 @@ class CameraDrag(bge.types.KX_PythonComponent):
 
 		self.__lastMousePos = Vector([0,0])
 
+
 	# Moves the object on the X axis (whatever axis this mean)
 	def __moveX(self, value):
 		vec = Vector([value,0,0])
 		if self.upAxis == 0:
 			vec = Vector([0, value, 0])
+		if not self.localMovement and vec.length != 0:
+			vec = self.object.worldOrientation * vec
+			vec[self.upAxis] = 0
 		self.object.applyMovement(vec*self.speed, self.localMovement)
 
 	# Moves the object on the Y axis (whatever axis this mean)
@@ -74,6 +78,9 @@ class CameraDrag(bge.types.KX_PythonComponent):
 		vec = Vector([0, value, 0])
 		if self.upAxis == 0:
 			vec = Vector([0, 0, value])
+		if not self.localMovement and vec.length != 0:
+			vec = self.object.worldOrientation * vec
+			vec[self.upAxis] = 0
 		self.object.applyMovement(vec * self.speed, self.localMovement)
 
 	# Makes the object move with the keyboard (W,A,S,D keys)

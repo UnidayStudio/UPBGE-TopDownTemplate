@@ -54,6 +54,13 @@ class ObjectChaser(bge.types.KX_PythonComponent):
 
 		self.upAxis    = {"X Axis":0, "Y Axis":1, "Z Axis":2}[args["Up Axis"]]
 		self.frontAxis = {"X Axis":0, "Y Axis":1, "Z Axis":2}[args["Front Axis"]]
+
+		# Some error handlers...
+		if self.upAxis == self.frontAxis:
+			print("[Object Chaser] Error: Front and Up axis needs to be different.\n\t->Defined as default Y,Z")
+			self.frontAxis = 1
+			self.upAxis    = 2
+
 		self.smoothTurn = args["Smooth Turn"]
 
 		self.__stopped   = True
@@ -84,7 +91,7 @@ class ObjectChaser(bge.types.KX_PythonComponent):
 				self.__path = self.__path[1:]
 				vec = self.object.getVectTo(self.__path[0])
 
-			self.object.alignAxisToVect(vec[1], self.frontAxis, self.smoothTurn)
+			self.object.alignAxisToVect(vec[1], self.frontAxis, 1.0 - self.smoothTurn)
 			self.object.alignAxisToVect([0,0,1],self.upAxis, 1)
 
 			self.object.applyMovement([0,self.speed,0], True)
