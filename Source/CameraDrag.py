@@ -5,41 +5,42 @@
 #                       Access: youtube.com/UnidayStudio                      #
 #                               github.com/UnidayStudio                       #
 ###############################################################################
-# HOW TO USE IN YOUR PROJECTS:
-# It's very easy to use: Just load this script into your .blend file (or paste
-# them in the same folder that your .blend is), select your camera (or an obj,
-# you decide) and attach them into the components (CameraDrag.CameraDrag).
-# 	It's very simple to configure:
-#	-> Show Mouse: Enable if you want to show the mouse
-#	-> Mouse Movement: Enable if you want to activate the mouse drag logic
-#	-> Mouse Button: Which mouse button you want to use
-#	-> Keyboard Movement: Enable if you want to move the object using W,A,S,D
-#	-> Up Axis: Select the UP axis.
-#	-> Local Movement: Local or Global movement? You decide!
-#	-> Mouse Sensibility: The mouse sensibility!
-#	-> Keyboard Speed: If you enabled the Keyboard Movement, control the speed
-#					   here!
-#	-> Limit Area: You can limit the area that the object can stay by playing
-#				   around with this values. If you don't want, just set to 0
-###############################################################################
 import bge
 from mathutils import Vector, Matrix
+from collections import OrderedDict
 
 class CameraDrag(bge.types.KX_PythonComponent):
-	args = {
-		"Show Mouse"		: True,
-		"Mouse Movement"	: True,
-		"Mouse Button"		: {"Right Mouse Button", "Middle Mouse Button", "Left Mouse Button"},
-		"Keyboard Movement"	: True,
-		"Up Axis"          	: {"Z Axis", "Y Axis", "X Axis"},
-		"Local Movement"	: False,
-		"Mouse Sensibility"	: 0.5,
-		"Keyboard Speed"	: 0.3,
-		"Limit Area"		: Vector([0.0,0.0,0.0]),
-	}
+	""" HOW TO USE IN YOUR PROJECTS:
+	It's very easy to use: Just load this script into your .blend file (or paste
+	them in the same folder that your .blend is), select your camera (or an obj,
+	you decide) and attach them into the components (CameraDrag.CameraDrag).
+		It's very simple to configure:
+	-> Show Mouse: Enable if you want to show the mouse
+	-> Mouse Movement: Enable if you want to activate the mouse drag logic
+	-> Mouse Button: Which mouse button you want to use
+	-> Keyboard Movement: Enable if you want to move the object using W,A,S,D
+	-> Up Axis: Select the UP axis.
+	-> Local Movement: Local or Global movement? You decide!
+	-> Mouse Sensibility: The mouse sensibility!
+	-> Keyboard Speed: If you enabled the Keyboard Movement, control the speed
+					   here!
+	-> Limit Area: You can limit the area that the object can stay by playing
+				   around with this values. If you don't want, just set to 0
+	"""
+	args = OrderedDict([
+		("Show Mouse", True),
+		("Mouse Movement", True),
+		("Mouse Button", {"Right Mouse Button", "Middle Mouse Button", "Left Mouse Button"}),
+		("Keyboard Movement", True),
+		("Up Axis", {"Z Axis", "Y Axis", "X Axis"}),
+		("Local Movement", False),
+		("Mouse Sensibility", 0.5),
+		("Keyboard Speed", 0.3),
+		("Limit Area", Vector([0.0,0.0,0.0])),
+	])
 
-	# Start Function
 	def start(self, args):
+		""" Start Funtion """
 		self.hasMouseMovement = args["Mouse Movement"]
 		self.hasKeyboardMovement = args["Keyboard Movement"]
 
@@ -62,9 +63,8 @@ class CameraDrag(bge.types.KX_PythonComponent):
 
 		self.__lastMousePos = Vector([0,0])
 
-
-	# Moves the object on the X axis (whatever axis this mean)
 	def __moveX(self, value):
+		"""Moves the object on the X axis (whatever axis this mean)"""
 		vec = Vector([value,0,0])
 		if self.upAxis == 0:
 			vec = Vector([0, value, 0])
@@ -73,8 +73,8 @@ class CameraDrag(bge.types.KX_PythonComponent):
 			vec[self.upAxis] = 0
 		self.object.applyMovement(vec*self.speed, self.localMovement)
 
-	# Moves the object on the Y axis (whatever axis this mean)
 	def __moveY(self, value):
+		"""Moves the object on the Y axis (whatever axis this mean)"""
 		vec = Vector([0, value, 0])
 		if self.upAxis == 0:
 			vec = Vector([0, 0, value])
@@ -83,25 +83,25 @@ class CameraDrag(bge.types.KX_PythonComponent):
 			vec[self.upAxis] = 0
 		self.object.applyMovement(vec * self.speed, self.localMovement)
 
-	# Makes the object move with the keyboard (W,A,S,D keys)
 	def keyboardMovement(self):
+		"""Makes the object move with the keyboard (W,A,S,D keys)"""
 		keyboard = bge.logic.keyboard.inputs
 		x = 0; y = 0
 
-		if keyboard[bge.events.WKEY].values[-1]:	y = 1
-		elif keyboard[bge.events.SKEY].values[-1]:	y = -1
-		if keyboard[bge.events.AKEY].values[-1]:	x = -1
-		elif keyboard[bge.events.DKEY].values[-1]:	x = 1
+		if keyboard[bge.events.WKEY].active:	y = 1
+		elif keyboard[bge.events.SKEY].active:	y = -1
+		if keyboard[bge.events.AKEY].active:	x = -1
+		elif keyboard[bge.events.DKEY].active:	x = 1
 
 		self.__moveX(x)
 		self.__moveY(y)
 
-	# Makes the object move by clicking (LMB) and dragging the mouse
 	def mouseMovement(self):
+		"""Makes the object move by clicking (LMB) and dragging the mouse"""
 		mouse = bge.logic.mouse.inputs
 		mPos = Vector(bge.logic.mouse.position)
 
-		if mouse[self.mButton].values[-1]:
+		if mouse[self.mButton].active:
 			# Mouse displacement since last frame
 			mDisp = self.__lastMousePos - mPos
 			mDisp *= self.sens # Apply Mouse sensibility
@@ -110,9 +110,9 @@ class CameraDrag(bge.types.KX_PythonComponent):
 
 		self.__lastMousePos = mPos
 
-	# Limits the area that this object can stay. If you don't want this
-	# limitation, just set the values to zero (0).
 	def limitArea(self):
+		"""Limits the area that this object can stay. If you don't want this
+		limitation, just set the values to zero (0)."""
 		for axis in range(3):
 			if self.hasAreaLimit[axis] == 0:
 				continue
@@ -121,8 +121,9 @@ class CameraDrag(bge.types.KX_PythonComponent):
 				final = self.hasAreaLimit[axis]*(value/abs(value))
 				self.object.worldPosition[axis] = final
 
-	# Update Function
 	def update(self):
+		"""Update Function"""
+
 		if self.hasKeyboardMovement:
 			self.keyboardMovement()
 		if self.hasMouseMovement:
